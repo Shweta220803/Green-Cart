@@ -7,7 +7,7 @@ export const placeOrderCOD = async (req, res) => {
   try {
     // const { userId, items, address } = req.body;
     const { items, address } = req.body;
-    const userId = req.userId; // ✅ Get from authUser middleware
+    const userId = req.userId; // Get from authUser middleware
 
     if (!address || items.length === 0) {
       return res.json({ success: false, message: "Invalid data" });
@@ -29,7 +29,7 @@ export const placeOrderCOD = async (req, res) => {
       address,
       amount,
       paymentType: "COD",
-      //   status: "Placed"
+      status: "Placed", // Optional but recommended
     });
 
     // await order.save();
@@ -125,7 +125,9 @@ export const placeOrderStripe = async (req, res) => {
 // Get a single order by User ID
 export const getUserOrders = async (req, res) => {
   try {
-    const { userId } = req.body;
+    // const { userId } = req.body;
+    const userId = req.userId; // Assuming userId is set from the authentication middleware
+
     const orders = await Order.find({
       userId,
       $or: [{ paymentType: "COD" }, { isPaid: true }],
